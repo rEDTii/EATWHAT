@@ -269,6 +269,7 @@ static void countsecondsTask(void *pvParameters){
 								UG_TextboxShow( &window_7, TXB_ID_9 );				
 						}
 				}
+				
 		}
 }
 

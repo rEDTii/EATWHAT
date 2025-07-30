@@ -23,8 +23,8 @@ void BSP_init() {
 		PWM_BL_Init();
 		printf("PWM BL init ok.\r\n");	
 		// 读取并设置亮度值
-		W25Q64_ReadData(W25Q64_BRIGHTNESS_ADDR, &brightness, 1);
-		Set_PWM_BL(brightness);
+//		W25Q64_ReadData(W25Q64_BRIGHTNESS_ADDR, &brightness, 1);
+//		Set_PWM_BL(brightness);
 		
 		// 读取音量值
 		W25Q64_ReadData(W25Q64_VOLUME_ADDR, &volume_value, 1);

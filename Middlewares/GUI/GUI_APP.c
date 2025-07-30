@@ -147,9 +147,8 @@ UG_OBJECT  obj_buff_wnd_3[6];
 
 UG_IMAGE image3_1;
 UG_IMAGE image3_2;
-//UG_IMAGE image3_3;
 
-//UG_TEXTBOX textbox3_1;
+
 UG_TEXTBOX textbox3_2;	
 UG_TEXTBOX textbox3_3;
 
@@ -200,24 +199,16 @@ UG_WINDOW  window_7;
 UG_OBJECT  obj_buff_wnd_7[4];	
 
 UG_IMAGE image7_1;
-//UG_IMAGE image7_2;
-//UG_IMAGE image7_3;
 
 UG_TEXTBOX textbox7_1;
-//UG_TEXTBOX textbox7_2;	
-//UG_TEXTBOX textbox7_3;
 
 /* Window 8 */
 UG_WINDOW  window_8;
 UG_OBJECT  obj_buff_wnd_8[4];	
 
 UG_IMAGE image8_1;
-//UG_IMAGE image8_2;
-//UG_IMAGE image8_3;
 
 UG_TEXTBOX textbox8_1;
-//UG_TEXTBOX textbox8_2;	
-//UG_TEXTBOX textbox8_3;
 
 /* Window 9 */
 UG_WINDOW  window_9;

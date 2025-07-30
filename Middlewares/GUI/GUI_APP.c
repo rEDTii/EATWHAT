@@ -135,7 +135,7 @@ UG_WINDOW  window_2;
 UG_OBJECT  obj_buff_wnd_2[3];
 
 UG_IMAGE image2_1;
-UG_IMAGE image2_2;																						
+UG_IMAGE image_exit;																						
 																						
 UG_TEXTBOX textbox2_1;
 											
@@ -147,9 +147,8 @@ UG_OBJECT  obj_buff_wnd_3[6];
 
 UG_IMAGE image3_1;
 UG_IMAGE image3_2;
-UG_IMAGE image3_3;
 
-//UG_TEXTBOX textbox3_1;
+
 UG_TEXTBOX textbox3_2;	
 UG_TEXTBOX textbox3_3;
 
@@ -161,7 +160,7 @@ UG_OBJECT  obj_buff_wnd_4[6];
 
 UG_IMAGE image4_1;
 UG_IMAGE image4_2;
-UG_IMAGE image4_3;
+//UG_IMAGE image4_3;
 
 //UG_TEXTBOX textbox4_1;
 UG_TEXTBOX textbox4_2;	
@@ -171,7 +170,7 @@ UG_TEXTBOX textbox4_3;
 UG_WINDOW  window_5;
 UG_OBJECT  obj_buff_wnd_5[11];	
 
-UG_IMAGE image5_1;
+//UG_IMAGE image5_1;
 UG_IMAGE image_arrowdown;
 UG_IMAGE image_arrowup;
 
@@ -188,7 +187,7 @@ UG_TEXTBOX textbox5_1;
 UG_WINDOW  window_6;
 UG_OBJECT  obj_buff_wnd_6[4];
 
-UG_IMAGE image6_1;
+//UG_IMAGE image6_1;
 
 UG_BUTTON button6_1;
 UG_BUTTON button6_2;
@@ -200,24 +199,16 @@ UG_WINDOW  window_7;
 UG_OBJECT  obj_buff_wnd_7[4];	
 
 UG_IMAGE image7_1;
-UG_IMAGE image7_2;
-//UG_IMAGE image7_3;
 
 UG_TEXTBOX textbox7_1;
-//UG_TEXTBOX textbox7_2;	
-//UG_TEXTBOX textbox7_3;
 
 /* Window 8 */
 UG_WINDOW  window_8;
 UG_OBJECT  obj_buff_wnd_8[4];	
 
 UG_IMAGE image8_1;
-UG_IMAGE image8_2;
-//UG_IMAGE image8_3;
 
 UG_TEXTBOX textbox8_1;
-//UG_TEXTBOX textbox8_2;	
-//UG_TEXTBOX textbox8_3;
 
 /* Window 9 */
 UG_WINDOW  window_9;
@@ -1456,7 +1447,7 @@ void uGUI_Window2(void)
 		UG_ImageSetBMP( &window_2, IMG_ID_2, &Start);	
 		
 		/* Create Image 2 */
-		UG_ImageCreate( &window_2, &image2_2, IMG_ID_3, 225, 250, 269, 310 );
+		UG_ImageCreate( &window_2, &image_exit, IMG_ID_3, 225, 250, 269, 310 );
 		UG_ImageSetBMP( &window_2, IMG_ID_3, &Exit);
 
 
@@ -1490,7 +1481,7 @@ void uGUI_Window3(void){
 		UG_ImageSetBMP( &window_3, IMG_ID_5, &Stop);
 		
 		/* Create Image 3 */
-		UG_ImageCreate( &window_3, &image3_3, IMG_ID_6, 225, 250, 269, 310 );
+		UG_ImageCreate( &window_3, &image_exit, IMG_ID_6, 225, 250, 269, 310 );
 		UG_ImageSetBMP( &window_3, IMG_ID_6, &Exit);
 		
 		 /* Create Textbox 1 */
@@ -1536,7 +1527,7 @@ void uGUI_Window4(void){
 		UG_ImageSetBMP( &window_4, IMG_ID_8, &Stop);
 		
 		/* Create Image 3 */
-		UG_ImageCreate( &window_4, &image4_3, IMG_ID_9, 225, 250, 269, 310 );
+		UG_ImageCreate( &window_4,&image_exit, IMG_ID_9, 225, 250, 269, 310 );
 		UG_ImageSetBMP( &window_4, IMG_ID_9, &Exit);
 		
 		 /* Create Textbox 1 */
@@ -1575,7 +1566,7 @@ void uGUI_Window5(void){
 		UG_WindowSetTitleTextAlignment(&window_5, ALIGN_CENTER );
 	
 		/* Create Image 1 */
-		UG_ImageCreate( &window_5, &image5_1, IMG_ID_10, 235, 255, 279, 310 );
+		UG_ImageCreate( &window_5, &image_exit, IMG_ID_10, 235, 255, 279, 310 );
 		UG_ImageSetBMP( &window_5, IMG_ID_10, &Exit);
 	
 		/* Create Image 2 */
@@ -1636,7 +1627,7 @@ void uGUI_Window6(void){
 
 	
 		/* Create Image 1 */
-		UG_ImageCreate( &window_6, &image6_1, IMG_ID_12, 195, 105, 239, 145 );
+		UG_ImageCreate( &window_6, &image_exit, IMG_ID_12, 195, 105, 239, 145 );
 		UG_ImageSetBMP( &window_6, IMG_ID_12, &Exit);
 	
 	
@@ -1685,7 +1676,7 @@ void uGUI_Window7(void){
 //		UG_ImageSetBMP( &window_7, IMG_ID_14, &Stop);
 		
 		/* Create Image 3 */
-		UG_ImageCreate( &window_7, &image7_2, IMG_ID_15, 225, 250, 269, 310 );
+		UG_ImageCreate( &window_7, &image_exit, IMG_ID_15, 225, 250, 269, 310 );
 		UG_ImageSetBMP( &window_7, IMG_ID_15, &Exit);
 		
 		 /* Create Textbox 1 */
@@ -1731,7 +1722,7 @@ void uGUI_Window8(void){
 //		UG_ImageSetBMP( &window_8, IMG_ID_17, &Stop);
 		
 		/* Create Image 3 */
-		UG_ImageCreate( &window_8, &image8_2, IMG_ID_18, 225, 250, 269, 310 );
+		UG_ImageCreate( &window_8, &image_exit, IMG_ID_18, 225, 250, 269, 310 );
 		UG_ImageSetBMP( &window_8, IMG_ID_18, &Exit);
 		
 		 /* Create Textbox 1 */
@@ -1833,7 +1824,7 @@ void uGUI_Window10(void){
 		
 		
 		/* Create Image 1 */
-		UG_ImageCreate( &window_10, &image8_2, IMG_ID_5, 225, 250, 269, 310 );
+		UG_ImageCreate( &window_10, &image_exit, IMG_ID_5, 225, 250, 269, 310 );
 		UG_ImageSetBMP( &window_10, IMG_ID_5, &Exit);
 	
 }
@@ -1903,7 +1894,7 @@ void uGUI_Window11(void){
 		UG_ImageCreate( &window_11, &image_arrowup, IMG_ID_2,185, 45,225, 90 );   //¼Ó
 		UG_ImageSetBMP( &window_11, IMG_ID_2, &Arrow_up);
 
-		UG_ImageCreate( &window_11, &image8_2, IMG_ID_5, 225, 250, 269, 310 );
+		UG_ImageCreate( &window_11, &image_exit, IMG_ID_5, 225, 250, 269, 310 );
 		UG_ImageSetBMP( &window_11, IMG_ID_5, &Exit);
 	
 }
@@ -1979,7 +1970,7 @@ void uGUI_Window13(void){
 		
 		
 		/* Create Image 1 */
-		UG_ImageCreate( &window_13, &image8_2, IMG_ID_5, 225, 250, 269, 310 );
+		UG_ImageCreate( &window_13,&image_exit, IMG_ID_5, 225, 250, 269, 310 );
 		UG_ImageSetBMP( &window_13, IMG_ID_5, &Exit);
 	
 }
@@ -2025,7 +2016,7 @@ void uGUI_Window14(void){
 		
 		
 		/* Create Image 1 */
-		UG_ImageCreate( &window_14, &image8_2, IMG_ID_5, 225, 250, 269, 310 );
+		UG_ImageCreate( &window_14, &image_exit, IMG_ID_5, 225, 250, 269, 310 );
 		UG_ImageSetBMP( &window_14, IMG_ID_5, &Exit);
 	
 }

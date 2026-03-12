@@ -27,8 +27,8 @@
 
 项目来自“复微杯”2025全国大学生电子设计大赛选题 - 基于FM33XX系列MCU的多媒体音频终端系统，旨在为复旦微电子集团的全新 MCU 型号探索应用场景与实现方案。
 
-<img width="500" alt="image" src="https://github.com/user-attachments/assets/429c10ec-09b6-4d9c-8318-d67665f732e3" />
-<img width="360" alt="image" src="https://github.com/user-attachments/assets/a2e42caf-d639-4ea1-9052-c7fbb98b23e0" />
+<img width="420" alt="image" src="https://github.com/user-attachments/assets/429c10ec-09b6-4d9c-8318-d67665f732e3" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/a2e42caf-d639-4ea1-9052-c7fbb98b23e0" />
 
 图中硬件标注：①电容触摸LCD屏，集成显示+触摸检测；②功放模块；③扬声器；④麦克风模块；⑤SD卡存储模块；⑥外部flash存储模块；⑦RTC供电纽扣电池；⑧系统供电。当系统掉电时，将切换为使用纽扣电池为RTC时钟供电，以维持时钟走时。
 
@@ -44,8 +44,13 @@
 ### 1. 高带宽音频流乒乓处理机制
 SPI DMA + I2S DMA 的双 DMA + 双缓冲乒乓结构协作配合实现音频数据流的高效存取，支撑双声道多采样率 24-bit WAV 高清音频的录制/播放；SPI DMA 基于信号量实现，降低了CPU 占用，提高任务调度的实时性；
 
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/e03f789c-6541-4b61-abd4-31c1251652cc" />
+
 ### 2. 自适应限幅滤波算法
 基于前值保持的变化率约束的动态限幅，有效抑制突发瞬态噪声的同时保证了实时性，对缓解扬声器爆破音问题具有显著效果；
+
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/9d230f86-4936-4865-80db-f372e8273a6b" />
+
 
 ### 3. 任务调度与轻量级同步互斥设计
 - 基于任务通知机制和中断实现触摸模块，通过任务通知值奇偶性判决触摸动作，实现高响应、低功耗的中断式触摸驱动；

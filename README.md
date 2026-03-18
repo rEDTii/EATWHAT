@@ -44,6 +44,7 @@
 ### 1. 高带宽音频流乒乓处理机制
 SPI DMA + I2S DMA 的双 DMA + 双缓冲乒乓结构协作配合实现音频数据流的高效存取，支撑双声道多采样率 24-bit WAV 高清音频的录制/播放；SPI DMA 基于信号量实现，降低了CPU 占用，提高任务调度的实时性；
 
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/d6f7d2bd-24e2-4519-a0b2-b7ad671aa624" />
 <img width="800" alt="image" src="https://github.com/user-attachments/assets/e03f789c-6541-4b61-abd4-31c1251652cc" />
 
 ### 2. 自适应限幅滤波算法

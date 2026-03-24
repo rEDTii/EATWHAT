@@ -1,4 +1,4 @@
-/* Â¼ÒôºÍ²¥·ÅÈÎÎñ */
+/* å½•éŸ³å’Œæ’­æ”¾ä»»åŠ¡ */
 #include "recorder.h"
 #include "wav.h"
 #include "myff.h"
@@ -6,110 +6,110 @@
 #include "rtc.h"
 
 
-// Ğ´Èë»º³åÇø´óĞ¡ÎªBoubleBufferDMASize*3
+// å†™å…¥ç¼“å†²åŒºå¤§å°ä¸ºBoubleBufferDMASize*3
 #define dbBufferDMASize 1024
 
-// 32Î»Ë«»º´æI2S DMAÔ­Ê¼Êı¾İ
+// 32ä½åŒç¼“å­˜I2S DMAåŸå§‹æ•°æ®
 __attribute__((aligned(4))) uint32_t data_buffer0[dbBufferDMASize];
 __attribute__((aligned(4))) uint32_t data_buffer1[dbBufferDMASize];
 uint16_t data_buff_len = sizeof(data_buffer0)>>2;
 uint16_t data_buff_size = sizeof(data_buffer0);
-uint32_t * current_buf; // Ö¸Ïòµ±Ç°ÕıÔÚĞ´ÈëµÄbuffer
+uint32_t * current_buf; // æŒ‡å‘å½“å‰æ­£åœ¨å†™å…¥çš„buffer
 
-// 24Î»Ğ´Èë/¶ÁÈ¡»º´æ
+// 24ä½å†™å…¥/è¯»å–ç¼“å­˜
 uint8_t buftemp[dbBufferDMASize * 3];
 uint16_t buftemp_len = sizeof(buftemp);
 
-// ´ı´¦ÀíÊı×é±êÖ¾
+// å¾…å¤„ç†æ•°ç»„æ ‡å¿—
 bool which_databuffer = 0; 
 
-// ¶ÁĞ´ÔİÊ±±äÁ¿
-uint32_t writeSize = 0; // Ğ´ÈëµÄ×Ü×Ö½Ú´óĞ¡
-uint32_t readSize  = 0; // ÒÑ¶ÁµÄ×Ü×Ö½Ú´óĞ¡
-uint32_t pause_read_size = 0;	// ÔİÍ£´¦µÄreadsize¼ÇÂ¼
-uint32_t dataSize  = 0; // ´ı¶ÁÎÄ¼şµÄÊı¾İ×Ü×Ö½Ú´óĞ¡
+// è¯»å†™æš‚æ—¶å˜é‡
+uint32_t writeSize = 0; // å†™å…¥çš„æ€»å­—èŠ‚å¤§å°
+uint32_t readSize  = 0; // å·²è¯»çš„æ€»å­—èŠ‚å¤§å°
+uint32_t pause_read_size = 0;	// æš‚åœå¤„çš„readsizeè®°å½•
+uint32_t dataSize  = 0; // å¾…è¯»æ–‡ä»¶çš„æ•°æ®æ€»å­—èŠ‚å¤§å°
 
-// Â¼ÖÆµÄ²ÉÑùÂÊºÍ²¥·ÅµÄ²ÉÑùÂÊ£¬Îª·ÀÖ¹²¥·Å´Û¸ÄĞ´Èë²ÉÑùÂÊ¹ÊÓÃÁËÁ½¸ö±äÁ¿¡£
-const uint32_t sample_rate = FL_I2S_AUDIOFREQ_8K;
+// å½•åˆ¶çš„é‡‡æ ·ç‡å’Œæ’­æ”¾çš„é‡‡æ ·ç‡ï¼Œä¸ºé˜²æ­¢æ’­æ”¾ç¯¡æ”¹å†™å…¥é‡‡æ ·ç‡æ•…ç”¨äº†ä¸¤ä¸ªå˜é‡ã€‚
+const uint32_t sample_rate = FL_I2S_AUDIOFREQ_32K;
 uint32_t read_sample_rate;
 
-// ĞÂÂ¼ÖÆµÄÎÄ¼şÃû£¬Í¬Ê±ÓÃÓÚÌí¼Ó½øÄÚ²¿Á´±í
+// æ–°å½•åˆ¶çš„æ–‡ä»¶åï¼ŒåŒæ—¶ç”¨äºæ·»åŠ è¿›å†…éƒ¨é“¾è¡¨
 char new_audio_name_path[40];
-char time_str[30];	// Ê±¼ä×Ö·û´®»º³å
+char time_str[30];	// æ—¶é—´å­—ç¬¦ä¸²ç¼“å†²
 
-// ÕıÔÚÄÖÖÓ±êÖ¾Î»
+// æ­£åœ¨é—¹é’Ÿæ ‡å¿—ä½
 bool is_alarming = 0;
 
-// ÒôÁ¿µ÷½Ú
+// éŸ³é‡è°ƒèŠ‚
 uint8_t volume_value;
 
-// ÈÎÎñ¾ä±ú
-// Â¼Òô
+// ä»»åŠ¡å¥æŸ„
+// å½•éŸ³
 TaskHandle_t xRecordingStartTaskHandle = NULL;
 TaskHandle_t xAudioRecordingTaskHandle = NULL;
 TaskHandle_t xRecordingPauseTaskHandle = NULL;
 TaskHandle_t xRecordingContinueTaskHandle = NULL;
-// ²¥·Å
+// æ’­æ”¾
 TaskHandle_t xPlayerStartTaskHandle = NULL;
 TaskHandle_t xAudioPlayingTaskHandle = NULL;
 TaskHandle_t xPlayingPauseTaskHandle = NULL;
 TaskHandle_t xPlayingContinueTaskHandle = NULL;
-// ÄÖÖÓ
+// é—¹é’Ÿ
 TaskHandle_t xAlarmPlayTaskHandle = NULL;
 
-// º¯ÊıÔ­ĞÍ
-// Â¼Òô
+// å‡½æ•°åŸå‹
+// å½•éŸ³
 static void AudioRecordStart(void* pvParameters);
 static void AudioRecording(void* pvParameters);
 static void RecordingPause(void* pvParameters);
 static void RecordingContinue(void* pvParameters);
-// ²¥·Å
+// æ’­æ”¾
 static void AudioPlayStart(void* pvParameters);
 static void AudioPlaying(void* pvParameters);
 static void PlayingPause(void* pvParameters);
 static void PlayingContinue(void* pvParameters);
-// ÄÖÖÓ
+// é—¹é’Ÿ
 static void AlarmPlay(void* pvParameters);
 
-// ĞÅºÅÁ¿
-SemaphoreHandle_t xGUIAudioSeconds_Sema = NULL;	// ÓÃÓÚGUIÖĞ¸üĞÂÒôÆµÊ±¼äµÄĞÅºÅÁ¿
-SemaphoreHandle_t xGUIRecordInfo_Sema = NULL;	// ÓÃÓÚGUIÖĞÌáÊ¾Â¼ÖÆĞÅÏ¢µÄĞÅºÅÁ¿
+// ä¿¡å·é‡
+SemaphoreHandle_t xGUIAudioSeconds_Sema = NULL;	// ç”¨äºGUIä¸­æ›´æ–°éŸ³é¢‘æ—¶é—´çš„ä¿¡å·é‡
+SemaphoreHandle_t xGUIRecordInfo_Sema = NULL;	// ç”¨äºGUIä¸­æç¤ºå½•åˆ¶ä¿¡æ¯çš„ä¿¡å·é‡
 
 
 #include "stdio.h"
-// Æô¶¯Â¼ÒôºÍ²¥·ÅÈÎÎñ£¬²¢Ìá¹©½Ï¸ßµÄÓÅÏÈ¼¶£¬±£Ö¤Â¼ÖÆ²¥·ÅÕı³£	
+// å¯åŠ¨å½•éŸ³å’Œæ’­æ”¾ä»»åŠ¡ï¼Œå¹¶æä¾›è¾ƒé«˜çš„ä¼˜å…ˆçº§ï¼Œä¿è¯å½•åˆ¶æ’­æ”¾æ­£å¸¸	
 void recorder_start() {
 		xGUIAudioSeconds_Sema = xSemaphoreCreateBinary();
 		xGUIRecordInfo_Sema = xSemaphoreCreateBinary();
 	
-		// Â¼ÖÆ
+		// å½•åˆ¶
 		xTaskCreate(AudioRecordStart, 	"rcdstt", 	256,  NULL, 6, &xRecordingStartTaskHandle);
 		xTaskCreate(AudioRecording, 		"rcding", 	256,  NULL, 6, &xAudioRecordingTaskHandle);
 		xTaskCreate(RecordingPause, 		"rcdpau", 	128,  NULL, 6, &xRecordingPauseTaskHandle);
 		xTaskCreate(RecordingContinue, 	"rcdctn", 	256,  NULL, 6, &xRecordingContinueTaskHandle);
 	
-		// ²¥·Å
+		// æ’­æ”¾
 		xTaskCreate(AudioPlayStart, 	"plystt", 	256,  NULL, 6, &xPlayerStartTaskHandle);
 		xTaskCreate(AudioPlaying, 		"plying", 	256,  NULL, 6, &xAudioPlayingTaskHandle);	
 		xTaskCreate(PlayingPause, 		"plypau", 	128,  NULL, 6, &xPlayingPauseTaskHandle);
 		xTaskCreate(PlayingContinue, 	"plyctn", 	256,  NULL, 6, &xPlayingContinueTaskHandle);
 	
-		// ÄÖÖÓ
+		// é—¹é’Ÿ
 		xTaskCreate(AlarmPlay, "alarm", 	256,  NULL, 6, &xAlarmPlayTaskHandle);	
 }
 
 
 
-// ¿ªÊ¼ºÍ½áÊøÂ¼Òô
+// å¼€å§‹å’Œç»“æŸå½•éŸ³
 static void AudioRecordStart(void* pvParameters) {
 		while(1) {
-				// ´´½¨wav header²¢¿ªÊ¼Â¼ÖÆ
+				// åˆ›å»ºwav headerå¹¶å¼€å§‹å½•åˆ¶
 				ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 				wav_create();
 				wav_recorder_start();
 				printf("write start.\r\n");
 			
-				// ¹Ø±ÕĞ´Èë£¬´¦ÀíºóÊÂ
+				// å…³é—­å†™å…¥ï¼Œå¤„ç†åäº‹
 				ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 				wav_stopwrite();
 				if (is_alarming) xTaskNotifyGive(xUitimeTaskHandle);
@@ -117,53 +117,53 @@ static void AudioRecordStart(void* pvParameters) {
 		}
 }
 
-// Â¼ÒôÖĞ
+// å½•éŸ³ä¸­
 static void AudioRecording(void* pvParameters) {
 		while(1) {
-				// µÈ´ıÀ´×ÔDMAÖĞ¶ÏµÄÍ¨Öª
+				// ç­‰å¾…æ¥è‡ªDMAä¸­æ–­çš„é€šçŸ¥
 				ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 			
 				wav_write_buffer_once();	
 		}
 }
 
-// Â¼ÒôÔİÍ£
+// å½•éŸ³æš‚åœ
 static void RecordingPause(void* pvParameters) {
 		while(1) {
-				// µÈ´ıÀ´×ÔDMAÖĞ¶ÏµÄÍ¨Öª
+				// ç­‰å¾…æ¥è‡ªDMAä¸­æ–­çš„é€šçŸ¥
 				ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 				wav_write_pause();
 		}
 }
 
-// Â¼Òô¼ÌĞø
+// å½•éŸ³ç»§ç»­
 static void RecordingContinue(void* pvParameters) {
 		while(1) {
-				// µÈ´ıÀ´×ÔDMAÖĞ¶ÏµÄÍ¨Öª
+				// ç­‰å¾…æ¥è‡ªDMAä¸­æ–­çš„é€šçŸ¥
 				ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 				wav_write_continue();
 		}
 }
 
 
-// ¿ªÊ¼ºÍ½áÊø²¥·Å
+// å¼€å§‹å’Œç»“æŸæ’­æ”¾
 static void AudioPlayStart(void* pvParameters) {
 		char *pcfilename;
 		uint32_t ulNotificationValue;
 		while(1) {
-				// ÈÎÎñÍ¨ÖªÊµÏÖ³¤¶ÈÎª1µÄÇáÁ¿¼¶¶ÓÁĞ£¬´«µİfilenameµÄ×Ö·û´®Ö¸Õë
+				// ä»»åŠ¡é€šçŸ¥å®ç°é•¿åº¦ä¸º1çš„è½»é‡çº§é˜Ÿåˆ—ï¼Œä¼ é€’filenameçš„å­—ç¬¦ä¸²æŒ‡é’ˆ
 				ulNotificationValue = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 			
-				// »ñÈ¡ÎÄ¼şÃû×Ö·û´®
+				// è·å–æ–‡ä»¶åå­—ç¬¦ä¸²
 				if(ulNotificationValue) {
 						pcfilename = (char *)ulNotificationValue;
-						// ¶ÁÈ¡wav header²¢¿ªÊ¼²¥·Å			
+						// è¯»å–wav headerå¹¶å¼€å§‹æ’­æ”¾			
 						wavheader_read(pcfilename);
 						wav_speaker_start();
 						printf("read start\n");
 				}
 				
-				// µÈ´ı¹Ø±Õ²¥·Å
+				// ç­‰å¾…å…³é—­æ’­æ”¾
 				ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 				wav_stopread();
 				if (is_alarming) xTaskNotifyGive(xUitimeTaskHandle);
@@ -172,44 +172,44 @@ static void AudioPlayStart(void* pvParameters) {
 }
 
 
-// ²¥·ÅÖĞ
+// æ’­æ”¾ä¸­
 static void AudioPlaying(void* pvParameters) {
 		while(1) {
-				// µÈ´ıÀ´×ÔDMAÖĞ¶ÏµÄÍ¨Öª
+				// ç­‰å¾…æ¥è‡ªDMAä¸­æ–­çš„é€šçŸ¥
 				ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 				wav_read_once();
 		}
 }
 
-// ²¥·ÅÔİÍ£
+// æ’­æ”¾æš‚åœ
 static void PlayingPause(void* pvParameters) {
 		while(1) {
-				// µÈ´ıÀ´×ÔDMAÖĞ¶ÏµÄÍ¨Öª
+				// ç­‰å¾…æ¥è‡ªDMAä¸­æ–­çš„é€šçŸ¥
 				ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 				wav_read_pause();
 		}
 }
 
-// ²¥·Å¼ÌĞø
+// æ’­æ”¾ç»§ç»­
 static void PlayingContinue(void* pvParameters) {
 		while(1) {
-				// µÈ´ıÀ´×ÔDMAÖĞ¶ÏµÄÍ¨Öª
+				// ç­‰å¾…æ¥è‡ªDMAä¸­æ–­çš„é€šçŸ¥
 				ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 				wav_read_continue();
 		}
 }
 
-// ÓÃÓÚÄÖÖÓÁåÉùÑ­»·²¥·Å£¬¸´ÓÃAudioPlaying
+// ç”¨äºé—¹é’Ÿé“ƒå£°å¾ªç¯æ’­æ”¾ï¼Œå¤ç”¨AudioPlaying
 static void AlarmPlay(void* pvParameters) {
 		while(1) {
-				// µÈ´ıÄÖÖÓ·¢ËÍÈÎÎñÍ¨Öª»½ĞÑ
+				// ç­‰å¾…é—¹é’Ÿå‘é€ä»»åŠ¡é€šçŸ¥å”¤é†’
 				ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 			
-				// ¶ÁÈ¡wav header²¢¿ªÊ¼²¥·Å			
+				// è¯»å–wav headerå¹¶å¼€å§‹æ’­æ”¾			
 				wavheader_read("0:/recorder/Alarm.wav");
 				wav_speaker_start();			
 			
-				// µÈ´ı¹Ø±ÕÄÖÖÓ
+				// ç­‰å¾…å…³é—­é—¹é’Ÿ
 				ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 				wav_stopread();
 				is_alarming = 0;
